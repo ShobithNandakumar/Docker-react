@@ -1,0 +1,24 @@
+version: '3'
+services:
+    web:
+        stdin_open: true
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+        ports: 
+            - "3000:3000"
+        volumes: 
+            - /app/node_modules
+            - .:/app
+    tests:
+        build: 
+            context: .
+            dockerfile: Dockerfile.dev
+
+
+#using just docker this command was used:
+#sudo docker run -it -p 3000:3000 -v /app/node_modules -v $(pwd):/app f7b526c24c20
+#here we establish a reference point inside the container to the file outside to detect changes in the files
+#but we don't point node_modules inside the container to outside because we aren't building outside.
+#we create references for /src and /public from inside the container to outside the container.
+#that is from /app inside the container to our current working directory where we build/run the container
